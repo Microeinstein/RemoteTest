@@ -259,3 +259,21 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Properties/Settings.settings
+/Properties/Settings.Designer.cs
+/Properties/Resources.resx
+/Properties/Resources.Designer.cs
+/Properties
+/bkp/FormBase - Copia.resx
+/bkp/FormBase - Copia.Designer.cs
+/bkp/FormBase - Copia.cs
+/bkp
+/Properties/Settings.settings
+/Properties/Settings.Designer.cs
+/Properties/Resources.resx
+/Properties/Resources.Designer.cs
+/Properties
+/bkp/FormBase - Copia.resx
+/bkp/FormBase - Copia.Designer.cs
+/bkp/FormBase - Copia.cs
+/bkp
