@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteTest", "RemoteTest.csproj", "{4335BAE2-4980-4BAA-99B4-5A7DD7B42D43}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD} = {9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLib", "..\NetLib\NetLib.csproj", "{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{95119619-90EC-41BB-BAE8-AFB0C5B38301} = {95119619-90EC-41BB-BAE8-AFB0C5B38301}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadTimer", "..\ThreadTimer\ThreadTimer.csproj", "{95119619-90EC-41BB-BAE8-AFB0C5B38301}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4335BAE2-4980-4BAA-99B4-5A7DD7B42D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4335BAE2-4980-4BAA-99B4-5A7DD7B42D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4335BAE2-4980-4BAA-99B4-5A7DD7B42D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4335BAE2-4980-4BAA-99B4-5A7DD7B42D43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4185C7-17CB-4C0B-9ED2-B37516A0A3DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95119619-90EC-41BB-BAE8-AFB0C5B38301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95119619-90EC-41BB-BAE8-AFB0C5B38301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95119619-90EC-41BB-BAE8-AFB0C5B38301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95119619-90EC-41BB-BAE8-AFB0C5B38301}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
