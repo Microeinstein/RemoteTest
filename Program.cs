@@ -11,11 +11,14 @@ namespace Micro.RemoteTest {
             Application.SetCompatibleTextRenderingDefault(false);
 
 #if DEBUG
-            Thread t1, t2;
+            NetLib.Core.debugStart();
+            Thread t1, t2, t3;
             t1 = new Thread(new ThreadStart(() => Application.Run(new FormBase("Server", "8080"))));
-            t2 = new Thread(new ThreadStart(() => Application.Run(new FormBase("Micro", "localhost:8080"))));
+            t2 = new Thread(new ThreadStart(() => Application.Run(new FormBase("UserA", "localhost:8080"))));
+            //t3 = new Thread(new ThreadStart(() => Application.Run(new FormBase("UserB", "localhost:8080"))));
             t1.Start();
             t2.Start();
+            //t3.Start();
 #else
             Application.Run(new FormBase());
 #endif
@@ -25,23 +28,21 @@ namespace Micro.RemoteTest {
     public class CueTextBox : TextBox {
         [Localizable(true)]
         public string Cue {
-            get { return mCue; }
-            set { mCue = value; updateCue(); }
+            get => _cue;
+            set { _cue = value; updateCue(); }
         }
+        private string _cue;
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, string lp);
 
         private void updateCue() {
-            if (this.IsHandleCreated && mCue != null) {
-                SendMessage(this.Handle, 0x1501, (IntPtr)1, mCue);
-            }
+            if (IsHandleCreated && _cue != null)
+                SendMessage(Handle, 0x1501, (IntPtr)1, _cue);
         }
         protected override void OnHandleCreated(EventArgs e) {
             base.OnHandleCreated(e);
             updateCue();
         }
-        private string mCue;
-
-        // PInvoke
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, string lp);
     }
 }

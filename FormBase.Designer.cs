@@ -27,9 +27,9 @@
             this.listUsers = new System.Windows.Forms.ListBox();
             this.btnClient = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.textLog = new System.Windows.Forms.TextBox();
             this.tableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.txtChat = new Micro.RemoteTest.CueTextBox();
+            this.textLog = new System.Windows.Forms.RichTextBox();
             this.txtNick = new Micro.RemoteTest.CueTextBox();
             this.txtAddress = new Micro.RemoteTest.CueTextBox();
             this.btnKick = new System.Windows.Forms.Button();
@@ -41,6 +41,7 @@
             // 
             this.btnServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnServer.Enabled = false;
+            this.btnServer.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnServer.Location = new System.Drawing.Point(438, 11);
             this.btnServer.Name = "btnServer";
             this.btnServer.Size = new System.Drawing.Size(46, 23);
@@ -69,6 +70,7 @@
             // 
             this.btnClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClient.Enabled = false;
+            this.btnClient.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnClient.Location = new System.Drawing.Point(393, 11);
             this.btnClient.Name = "btnClient";
             this.btnClient.Size = new System.Drawing.Size(43, 23);
@@ -81,6 +83,7 @@
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStop.Enabled = false;
+            this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnStop.Location = new System.Drawing.Point(486, 11);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(38, 23);
@@ -89,19 +92,6 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // textLog
-            // 
-            this.textLog.BackColor = System.Drawing.Color.White;
-            this.textLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textLog.Location = new System.Drawing.Point(3, 3);
-            this.textLog.Multiline = true;
-            this.textLog.Name = "textLog";
-            this.textLog.ReadOnly = true;
-            this.textLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textLog.Size = new System.Drawing.Size(394, 304);
-            this.textLog.TabIndex = 5;
-            // 
             // tableLayout
             // 
             this.tableLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -109,8 +99,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayout.ColumnCount = 1;
             this.tableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayout.Controls.Add(this.textLog, 0, 0);
             this.tableLayout.Controls.Add(this.txtChat, 0, 1);
+            this.tableLayout.Controls.Add(this.textLog, 0, 0);
             this.tableLayout.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayout.Location = new System.Drawing.Point(9, 37);
             this.tableLayout.Name = "tableLayout";
@@ -135,6 +125,20 @@
             this.txtChat.WordWrap = false;
             this.txtChat.TextChanged += new System.EventHandler(this.txtChat_TextChanged);
             this.txtChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtChat_KeyDown);
+            // 
+            // textLog
+            // 
+            this.textLog.BackColor = System.Drawing.SystemColors.Window;
+            this.textLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textLog.Font = new System.Drawing.Font("Consolas", 9F);
+            this.textLog.Location = new System.Drawing.Point(3, 3);
+            this.textLog.Name = "textLog";
+            this.textLog.ReadOnly = true;
+            this.textLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.textLog.Size = new System.Drawing.Size(394, 304);
+            this.textLog.TabIndex = 7;
+            this.textLog.Text = "";
+            this.textLog.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.textLog_LinkClicked);
             // 
             // txtNick
             // 
@@ -162,6 +166,7 @@
             // 
             this.btnKick.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnKick.Enabled = false;
+            this.btnKick.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnKick.Location = new System.Drawing.Point(478, 348);
             this.btnKick.Name = "btnKick";
             this.btnKick.Size = new System.Drawing.Size(45, 23);
@@ -174,6 +179,7 @@
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSend.Enabled = false;
+            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSend.Location = new System.Drawing.Point(415, 348);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(57, 23);
@@ -216,12 +222,12 @@
         private CueTextBox txtChat;
         private System.Windows.Forms.Button btnClient;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.TextBox textLog;
         private CueTextBox txtAddress;
         private CueTextBox txtNick;
         private System.Windows.Forms.TableLayoutPanel tableLayout;
         private System.Windows.Forms.Button btnKick;
         private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.RichTextBox textLog;
     }
 }
 

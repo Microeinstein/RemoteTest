@@ -1,14 +1,19 @@
 ﻿using Micro;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Micro.NetLib;
+using static Micro.NetLib.Core;
+using System.Collections.Generic;
 
 namespace Micro.RemoteTest {
     public partial class FormBase : Form {
         bool clientMode = false;
         Regex regAddress = new Regex(@"[\w.]+:\d{1,5}");
         Connection connect;
+        List<string> chat;
+        int capacity = 50;
 
         public FormBase() {
             InitializeComponent();
@@ -21,6 +26,7 @@ namespace Micro.RemoteTest {
             connect.incomingMessage += incomingMessage;
             connect.incomingUser += incomingUser;
             connect.leavingUser += (a, b, c) => stoppedClient(b, c, a);
+            chat = new List<string>(capacity);
             _updateForm();
         }
         public FormBase(string nick, string addr) : this() {
@@ -30,17 +36,17 @@ namespace Micro.RemoteTest {
             Size = MinimumSize;
 #endif
         }
-        private void FormBase_Load(object sender, EventArgs e) {
+
+        void FormBase_Load(object sender, EventArgs e) {
             Activate();
         }
-        private void FormBase_FormClosing(object sender, FormClosingEventArgs e) {
+        void FormBase_FormClosing(object sender, FormClosingEventArgs e) {
             btnStop.PerformClick();
         }
-        
-        private void txtNickAddress_TextChanged(object sender, EventArgs e) {
+        void txtNickAddress_TextChanged(object sender, EventArgs e) {
             _updateForm();
         }
-        private void btnClientServer_Click(object sender, EventArgs e) {
+        void btnClientServer_Click(object sender, EventArgs e) {
             if (clientMode = (sender == btnClient)) {
                 _writeChat("Connecting...");
                 var addr = txtAddress.Text.Split(':');
@@ -49,17 +55,19 @@ namespace Micro.RemoteTest {
                 connect.startServer(txtNick.Text, int.Parse(txtAddress.Text));
             }
         }
-        private void btnStop_Click(object sender, EventArgs e) {
+        void btnStop_Click(object sender, EventArgs e) {
             connect.stop();
         }
-        private void btnSend_Click(object sender, EventArgs e) {
+        void btnSend_Click(object sender, EventArgs e) {
             sendText();
         }
-        private void btnKick_Click(object sender, EventArgs e) {
+        void btnKick_Click(object sender, EventArgs e) {
             kickClients();
         }
-
-        private void txtChat_KeyDown(object sender, KeyEventArgs e) {
+        void textLog_LinkClicked(object sender, LinkClickedEventArgs e) {
+            System.Diagnostics.Process.Start(e.LinkText);
+        }
+        void txtChat_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyData == Keys.Enter) {
                 if (e.Shift)
                     txtChat.Text += "\n";
@@ -69,12 +77,12 @@ namespace Micro.RemoteTest {
                 e.SuppressKeyPress = true;
             }
         }
-        private void txtChat_TextChanged(object sender, EventArgs e) {
+        void txtChat_TextChanged(object sender, EventArgs e) {
             int nc = Regex.Matches(txtChat.Text, @"\n").Count;
             int he = 22 + (txtChat.Font.Height - 1) * Math.Min(nc, 8);
             tableLayout.RowStyles[1].Height = he + 4;
         }
-        private void listUsers_KeyUp(object sender, KeyEventArgs e) {
+        void listUsers_KeyUp(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Delete)
                 kickClients();
         }
@@ -103,15 +111,18 @@ namespace Micro.RemoteTest {
         void _updateList() {
             listUsers.Items.Clear();
             foreach (var u in connect.Users) {
-                listUsers.Items.Add(new UserItem(u));
+                listUsers.Items.Add(new MyUser(u));
             }
         }
         void _writeChat(string text) {
-            textLog.SuspendLayout();
-            textLog.Text += string.Format("[{0}] {1}\r\n", getTime(), text);
+            lock (chat) {
+                if (chat.Count >= capacity - 1)
+                    chat.RemoveRange(0, chat.Count - (capacity - 1));
+                chat.Add($"[{getTime()}] {text}");
+                textLog.Text = chat.Aggregate((a, b) => $"{a}\r\n{b}");
+            }
             textLog.SelectionStart = textLog.Text.Length - 1;
             textLog.ScrollToCaret();
-            textLog.ResumeLayout();
             txtChat.Focus();
         }
 
@@ -124,10 +135,10 @@ namespace Micro.RemoteTest {
             if (connect.isServer && listUsers.SelectedIndices.Count > 0) {
                 var tup = FormDialog.AskInput("Kick clients", "Type reason...");
                 if (tup.Item1 == DialogResult.OK) {
-                    UserItem[] users = new UserItem[listUsers.SelectedItems.Count];
+                    MyUser[] users = new MyUser[listUsers.SelectedItems.Count];
                     listUsers.SelectedItems.CopyTo(users, 0);
-                    foreach (UserItem item in users) {
-                        connect.kick(item.user.id, tup.Item2);
+                    foreach (MyUser item in users) {
+                        connect.kick(item.user.ID, tup.Item2);
                     }
                 }
             }
@@ -139,21 +150,21 @@ namespace Micro.RemoteTest {
             } else
                 writeChat("Unable to " + (clientMode ? "connect" : "listen"));
         }
-        void stoppedClient(stopReason reason, string additional, User user = null) {
+        void stoppedClient(StopReason reason, string additional, User user = null) {
             writeChat(connect.getLeaveReason(reason, additional, user));
         }
         void stoppedServer() {
             writeChat("Server closed");
         }
         void incomingMessage(User user, string[] text) {
-            writeChat(string.Format("{0}: {1}", user.nickname, text.Length > 0 ? text[0] : ""));
+            writeChat($"{user.nickname}: {(text.Length > 0 ? text[0] : "")}");
         }
         void incomingUser(User user) {
-            writeChat(string.Format("{0} connected", user.nickname));
+            writeChat($"{user.nickname} connected");
         }
         
         string getTime() {
-            var now = DateTime.Now;
+            var now = Now;
             string h = now.Hour + "",
                    m = now.Minute + "",
                    s = now.Second + "";
@@ -164,10 +175,10 @@ namespace Micro.RemoteTest {
         }
     }
 
-    class UserItem {
+    class MyUser {
         public readonly User user;
 
-        public UserItem(User u) {
+        public MyUser(User u) {
             user = u;
         }
         public override string ToString() {
