@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
 [assembly: AssemblyTitle("RemoteTest")]
-[assembly: AssemblyDescription("NetLib Demo")]
+[assembly: AssemblyDescription("NetLib Demonstration")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microeinstein")]
+[assembly: AssemblyCompany("Micro")]
 [assembly: AssemblyProduct("RemoteTest")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

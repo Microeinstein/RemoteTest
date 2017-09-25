@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable CS0168
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -12,10 +13,9 @@ namespace Micro.RemoteTest {
 
 #if DEBUG
             NetLib.Core.debugStart();
-            Thread t1, t2, t3;
-            t1 = new Thread(new ThreadStart(() => Application.Run(new FormBase("Server", "8080"))));
-            t2 = new Thread(new ThreadStart(() => Application.Run(new FormBase("UserA", "localhost:8080"))));
-            //t3 = new Thread(new ThreadStart(() => Application.Run(new FormBase("UserB", "localhost:8080"))));
+            var t1 = new Thread(() => Application.Run(new FormBase("Server", "8080")));
+            var t2 = new Thread(() => Application.Run(new FormBase("UserA", "localhost:8080")));
+            //var t3 = new Thread(() => Application.Run(new FormBase("UserB", "localhost:8080")));
             t1.Start();
             t2.Start();
             //t3.Start();
